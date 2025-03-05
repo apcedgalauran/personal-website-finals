@@ -1,32 +1,53 @@
 <template>
-  <div>
-    <!-- Navigation -->
+  <div :class="theme">
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/guestbook">Guestbook</router-link>
+      <h1>My Portfolio</h1>
+      <button @click="toggleTheme">
+        <span v-if="theme === 'light'">🌙 Dark Mode</span>
+        <span v-else>☀️ Light Mode</span>
+      </button>
     </nav>
-
-    <!-- Dynamic Content -->
-    <router-view></router-view>
+    <router-view />
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+
+const theme = ref(localStorage.getItem("theme") || "light");
+
+const toggleTheme = () => {
+  theme.value = theme.value === "light" ? "dark" : "light";
+  localStorage.setItem("theme", theme.value);
+};
+
+// Apply saved theme on load
+onMounted(() => {
+  document.body.classList.add(theme.value);
+});
+</script>
 
 <style scoped>
 nav {
   display: flex;
-  gap: 20px;
-  background: #333;
-  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: var(--nav-bg);
+  color: var(--text-color);
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
+button {
+  padding: 8px 15px;
+  border: none;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
-nav a:hover {
-  text-decoration: underline;
+button:hover {
+  background: var(--btn-hover);
 }
 </style>
