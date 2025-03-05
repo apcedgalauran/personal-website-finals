@@ -1,47 +1,32 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div>
+    <!-- Navigation -->
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+      <router-link to="/guestbook">Guestbook</router-link>
+    </nav>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <!-- Dynamic Content -->
+    <router-view></router-view>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+nav {
+  display: flex;
+  gap: 20px;
+  background: #333;
+  padding: 10px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+nav a:hover {
+  text-decoration: underline;
 }
 </style>
