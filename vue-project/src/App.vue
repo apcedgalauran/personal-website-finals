@@ -52,3 +52,5 @@ main {
 .light {
   background: #f8fafc;
   color: #1e293b;
+}
+</style>
