@@ -20,7 +20,7 @@
 
 <style scoped>
 .navbar {
-  background: #333;
+  background: #7a6161;
   padding: 1rem;
   position: fixed;
   width: 100%;
@@ -53,7 +53,7 @@
 }
 
 .navbar a:hover {
-  color: var(--primary-color, #4ade80);
+  color: var(--primary-color, #71757a);
 }
 
 .theme-toggle {
