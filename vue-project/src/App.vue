@@ -1,53 +1,54 @@
 <template>
   <div :class="theme">
-    <nav>
-      <h1>My Portfolio</h1>
-      <button @click="toggleTheme">
-        <span v-if="theme === 'light'">🌙 Dark Mode</span>
-        <span v-else>☀️ Light Mode</span>
-      </button>
-    </nav>
-    <router-view />
+    <Navbar @toggle-theme="toggleTheme" :theme="theme" />
+    <main>
+      <HeroSection />
+      <AboutMe />
+      <Projects />
+      <Guestbook />
+      <ContactForm />
+    </main>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
+import Navbar from './components/Navbar.vue';
+import HeroSection from './components/HeroSection.vue';
+import AboutMe from './components/AboutMe.vue';
+import Projects from './components/Projects.vue';
+import Guestbook from './components/Guestbook.vue';
+import ContactForm from './components/ContactForm.vue';
 
-const theme = ref(localStorage.getItem("theme") || "light");
+const theme = ref(localStorage.getItem('theme') || 'light');
 
 const toggleTheme = () => {
-  theme.value = theme.value === "light" ? "dark" : "light";
-  localStorage.setItem("theme", theme.value);
+  theme.value = theme.value === 'light' ? 'dark' : 'light';
+  localStorage.setItem('theme', theme.value);
+  document.body.className = theme.value; // Apply theme to body
 };
 
-// Apply saved theme on load
 onMounted(() => {
-  document.body.classList.add(theme.value);
+  document.body.className = theme.value;
 });
 </script>
 
 <style scoped>
-nav {
+main {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: var(--nav-bg);
-  color: var(--text-color);
+  flex-direction: column;
+  gap: 50px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  scroll-behavior: smooth;
 }
 
-button {
-  padding: 8px 15px;
-  border: none;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
+.dark {
+  background: #1e293b;
+  color: #f8fafc;
 }
 
-button:hover {
-  background: var(--btn-hover);
-}
-</style>
+.light {
+  background: #f8fafc;
+  color: #1e293b;

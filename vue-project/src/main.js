@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; // Import router
+import './assets/main.css'; // Import global styles
 
 const app = createApp(App);
-app.use(router); // Register Vue Router
 app.mount('#app');
