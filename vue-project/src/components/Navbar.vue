@@ -5,7 +5,7 @@
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
+        <li><a href="#gallery">Gallery</a></li>
         <li><a href="#guestbook">Guestbook</a></li>
         <li>
 
@@ -15,15 +15,16 @@
   </nav>
 </template>
 
-<style scoped>
+<style>
 .navbar {
-  background: #8b8585;
-  padding: 1rem;
+  background: #1e1e1e;
+  padding: 1rem 1.5rem;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navbar .container {
@@ -35,6 +36,12 @@
   padding: 0 20px;
 }
 
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f8f9fa;
+}
+
 .navbar ul {
   list-style: none;
   display: flex;
@@ -44,32 +51,29 @@
 
 .navbar a {
   text-decoration: none;
-  color: white;
+  color: #f0f0f0;
   font-weight: bold;
-  transition: color 0.3s;
+  font-size: 1rem;
+  padding: 8px 12px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 6px;
 }
 
 .navbar a:hover {
-  color: var(--primary-color, #71757a);
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
 }
 
-.theme-toggle {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
   .navbar ul {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .navbar {
+    padding: 0.8rem 1rem;
   }
 }
 </style>
+
