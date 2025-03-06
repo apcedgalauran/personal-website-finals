@@ -50,7 +50,7 @@
   </div>
 </section>
 
-<section id = "gallery" class="section">
+<section id = "gallery" class="gallery">
     <h4>Picture Gallery</h4>
     <div class="gallery-grid">
       <div v-for="(img, index) in galleryImages" :key="index" class="gallery-item">
@@ -111,7 +111,7 @@ body {
 .hero {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 80px 10%;
   gap: 40px;
   text-align: left;
@@ -122,11 +122,14 @@ body {
   box-sizing: border-box;
 }
 
+/* Ensures text stays readable */
 .content {
   max-width: 700px;
   flex: 1;
+  min-width: 300px; /* Prevents text from getting too narrow */
 }
 
+/* Text Styling */
 .hero h1 {
   font-size: 3rem;
   font-weight: bold;
@@ -140,6 +143,7 @@ body {
   color: #e0e0e0;
 }
 
+/* Button */
 .btn {
   display: inline-block;
   padding: 12px 28px;
@@ -163,8 +167,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40vw;
-  max-width: 600px;
+  width: 35vw; /* Slightly smaller for better spacing */
+  max-width: 400px;
   height: auto;
   aspect-ratio: 1 / 1;
   overflow: hidden;
@@ -178,7 +182,6 @@ body {
   border-radius: 50%;
 }
 
-/* About Section */
 /* About Section */
 .section {
   text-align: center; /* Centers all inline content */
@@ -316,16 +319,15 @@ body {
 .gallery {
   text-align: center;
   padding: 60px 20px;
-  background: linear-gradient(135deg, #e3eaf3, #f8f9fa); /* Subtle gradient */
+  background-color: #0d0d0d;
   border-radius: 12px;
 }
 
-.gallery h2 {
+.gallery h4 {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 25px;
-  color: #222;
-  text-transform: uppercase;
+  color: #f7f7f7;
   letter-spacing: 1px;
 }
 
@@ -406,17 +408,18 @@ body {
 
 /* RESPONSIVE BREAKPOINTS */
 
-/* For tablets */
+/* Ensure Navbar Doesn't Overlap Hero */
 @media (max-width: 1024px) {
   .hero {
-    flex-direction: column;
+    flex-direction: column-reverse; /* Image below text */
     text-align: center;
-    padding: 60px 8%;
+    padding: 120px 5% 60px; /* Extra padding at top */
+    min-height: auto;
   }
 
   .image-frame {
-    width: 50vw;
-    max-width: 300px;
+    width: 45vw;
+    max-width: 350px;
   }
 
   .hero h1 {
@@ -426,22 +429,19 @@ body {
   .hero p {
     font-size: 1.1rem;
   }
-
-  .btn {
-    font-size: 1rem;
-    padding: 10px 24px;
-  }
 }
 
-/* For mobile screens */
 @media (max-width: 768px) {
   .hero {
-    padding: 50px 5%;
-    gap: 30px;
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 100px 5% 50px; /* Extra padding to push below navbar */
+    gap: 20px;
   }
 
-  .content {
-    max-width: 100%;
+  .image-frame {
+    width: 60vw;
+    max-width: 300px;
   }
 
   .hero h1 {
@@ -453,40 +453,9 @@ body {
   }
 
   .btn {
+    padding: 10px 24px;
     font-size: 1rem;
-    padding: 10px 22px;
-  }
-
-  .image-frame {
-    width: 60vw;
-    max-width: 250px;
-  }
-
-  .about,
-  .gallery {
-    padding: 40px 5%;
-  }
-
-  .gallery-container {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 }
 
-/* Responsive Design Tweaks */
-@media (max-width: 768px) {
-  .about {
-    padding: 40px 5%;
-  }
-
-  .hobby-item {
-    flex: 1 1 100%;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .about h2::after,
-  .about h3::after {
-    width: 40px;
-  }
-}
 </style>

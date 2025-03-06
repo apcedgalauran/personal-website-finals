@@ -32,7 +32,15 @@ export default {
     };
   },
   async created() {
-    await this.fetchMessages();
+  await this.fetchMessages();
+
+  // Listen for new messages in real-time
+  supabase
+    .channel('guestbook')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'guestbook' }, (payload) => {
+      this.messages.unshift(payload.new);
+    })
+    .subscribe();
   },
   methods: {
     async fetchMessages() {
@@ -42,18 +50,21 @@ export default {
       }
     },
     async addMessage() {
-      if (!this.name || !this.email || !this.message) return;
-      this.loading = true;
-      const { data, error } = await supabase.from('guestbook').insert([
-        { name: this.name, email: this.email, message: this.message, created_at: new Date().toISOString() },
-      ]);
-      if (!error) {
-        this.messages.unshift(data[0]);
-        this.name = '';
-        this.email = '';
-        this.message = '';
-      }
-      this.loading = false;
+  if (!this.name || !this.email || !this.message) return;
+  this.loading = true;
+
+  const { error } = await supabase.from('guestbook').insert([
+    { name: this.name, email: this.email, message: this.message, created_at: new Date().toISOString() },
+  ]);
+
+  if (!error) {
+    await this.fetchMessages(); // Re-fetch messages after insert
+    this.name = '';
+    this.email = '';
+    this.message = '';
+  }
+
+  this.loading = false;
     },
   },
 };
