@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabaseClient';
 
-const supabase = createClient('https://your-supabase-url', 'your-anon-key');
+const supabase = createClient('supabaseUrl', 'supabaseAnonKey');
 
 export default {
   data() {
