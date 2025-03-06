@@ -8,7 +8,7 @@
           <a href="#about" class="btn">Learn More</a>
         </div>
         <div class="image-frame">
-            <img src=".assets/_MG_0603.JPG" alt="Profile Image" />
+            <img :src="image" alt="Profile Image" />
         </div>
       </section>
   
@@ -56,6 +56,8 @@
     { src: 'gallery2.jpg', alt: 'Gallery Image 2' },
     { src: 'gallery3.jpg', alt: 'Gallery Image 3' }
   ]);
+  const image = new URL('@/assets/_MG_0603.JPG', import.meta.url).href;
+
   </script>
   
   <style scoped>
