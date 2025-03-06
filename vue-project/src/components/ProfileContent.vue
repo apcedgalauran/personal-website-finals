@@ -8,7 +8,7 @@
           <a href="#about" class="btn">Learn More</a>
         </div>
         <div class="image-frame">
-          <img src="./assets/_MG_0603.JPG" alt="Your Picture">
+          <img src="@/assets/_MG_0603.JPG" alt="Your Picture">
         </div>
       </section>
   
