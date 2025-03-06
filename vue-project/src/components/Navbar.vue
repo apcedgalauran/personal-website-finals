@@ -19,7 +19,7 @@
 .navbar {
   background: #1e1e1e;
   padding: 1rem 1.5rem;
-  position: fixed;
+  position: relative;
   width: 100%;
   top: 0;
   left: 0;
