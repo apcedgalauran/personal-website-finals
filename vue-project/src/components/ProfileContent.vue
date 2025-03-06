@@ -1,112 +1,135 @@
 <template>
-    <div>
-      <!-- Hero Section -->
-      <section id="home" class="hero">
-        <div class="content">
-          <h1>Hi, I'm <span class="highlight">Ezekiel Galauran</span></h1>
-          <p>I'm a second-year CS student at Asia Pacific College, passionate about software and systems development. I have a deep interest in technology and enjoy solving problems.</p>
-          <a href="#about" class="btn">Learn More</a>
+  <div>
+    <!-- Hero Section -->
+    <section ref="sections" id="home" class="hero">
+      <div class="content slide-in-from-top">
+        <h1>Hi, I'm <span class="highlight">Ezekiel Galauran</span></h1>
+        <p>I'm a second-year CS student at Asia Pacific College, passionate about software and systems development. I have a deep interest in technology and enjoy solving problems.</p>
+        <a href="#about" class="btn">Learn More</a>
+      </div>
+      <div class="image-frame slide-in-from-left">
+        <img :src="image" alt="Profile Image" />
+      </div>
+    </section>
+    
+    <!-- About Section -->
+    <section ref="sections" id="about" class="about slide-in-from-top">
+      <div class="content">
+        <h2>About Me</h2>
+        <p>I'm a second-year Computer Science student at Asia Pacific College. I was previously a national champion in journalism during my secondary studies at Las Piñas City National Science High School.</p>
+        <p>I’m passionate about learning new programming languages and technologies. In my college journey, I've explored Java and Python, and I'm always excited to improve my skills.</p>
+
+        <h3>My Hobbies</h3>
+        <div class="hobbies">
+          <div class="hobby-card">
+            <i class="hobby-icon fas fa-guitar"></i>
+            <p>Playing different instruments like guitar, piano, drums, and exploring different genres of music.</p>
+          </div>
+          <div class="hobby-card">
+            <i class="hobby-icon fas fa-basketball-ball"></i>
+            <p>Enjoying basketball and volleyball games, whether for fun or competition.</p>
+          </div>
+          <div class="hobby-card">
+            <i class="hobby-icon fas fa-gamepad"></i>
+            <p>Immersing myself in online games like Valorant to unwind and challenge my reflexes.</p>
+          </div>
+        </div>   
+
+        <h3>My Goal</h3>
+        <div class="goal-card">
+          <i class="goal-icon fas fa-bullseye"></i>
+          <p>My ambition is to achieve financial freedom while using technology to create meaningful and lasting impacts in the world.</p>
         </div>
-        <div class="image-frame">
-          <img :src="image" alt="Profile Image" />
-        </div> 
-      </section> <!-- ✅ Correctly closing the section -->
-    </div>
-      <!-- About Section -->
-<section id="about" class="about">
-  <div class="content">
-    <h2>About Me</h2>
-    <p>I'm a second-year Computer Science student at Asia Pacific College. I was previously a national champion in journalism during my secondary studies at Las Piñas City National Science High School.</p>
-    <p>I’m passionate about learning new programming languages and technologies. In my college journey, I've explored Java and Python, and I'm always excited to improve my skills.</p>
 
-    <h3>My Hobbies</h3>
-    <div class="hobbies">
-      <div class="hobby-card">
-        <i class="hobby-icon fas fa-guitar"></i>
-        <p>Playing different instruments like guitar, piano, drums and exploring different genres of music.</p>
+        <h3>Favorite Video</h3>
+        <div class="video-card">
+          <i class="video-icon fas fa-video"></i>
+          <p>There's one video that always lifts my mood. <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="favorite-video-link">Check it out here!</a></p>
+        </div>
       </div>
-      <div class="hobby-card">
-        <i class="hobby-icon fas fa-basketball-ball"></i>
-        <p>Enjoying basketball and volleyball games, whether for fun or competition.</p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section ref="sections" id="gallery" class="gallery slide-in-from-top">
+      <h4>Picture Gallery</h4>
+      <div class="gallery-grid">
+        <div v-for="(img, index) in galleryImages" :key="index" class="gallery-item">
+          <img :src="getImageUrl(img)" alt="Gallery Image" @click="openModal(img)" />
+        </div>
       </div>
-      <div class="hobby-card">
-        <i class="hobby-icon fas fa-gamepad"></i>
-        <p>Immersing myself in online games like Valorant to unwind and challenge my reflexes.</p>
+
+      <!-- Image Modal -->
+      <div v-if="isModalOpen" class="modal" @click="closeModal">
+        <div class="modal-content">
+          <img :src="getImageUrl(selectedImage)" alt="Full Image" />
+        </div>
       </div>
-    </div>  
-
-    <h3>My Goal</h3>
-    <div class="goal-card">
-      <i class="goal-icon fas fa-bullseye"></i>
-      <p>My ambition is to achieve financial freedom while using technology to create meaningful and lasting impacts in the world.</p>
-    </div>
-
-    <h3>Favorite Video</h3>
-    <div class="video-card">
-      <i class="video-icon fas fa-video"></i>
-      <p>There's one video that always lifts my mood. <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="favorite-video-link">Check it out here!</a></p>
-    </div>
-
+    </section>
   </div>
-</section>
-
-<section id = "gallery" class="gallery">
-    <h4>Picture Gallery</h4>
-    <div class="gallery-grid">
-      <div v-for="(img, index) in galleryImages" :key="index" class="gallery-item">
-        <img :src="getImageUrl(img)" alt="Gallery Image" @click="openModal(img)" />
-      </div>
-    </div>
-
-    <!-- Image Modal -->
-    <div v-if="isModalOpen" class="modal" @click="closeModal">
-      <div class="modal-content">
-        <img :src="getImageUrl(selectedImage)" alt="Full Image" />
-      </div>
-    </div>
-  </section>
 </template>
 
+
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
-
-const galleryImages = ref(["eze1.jpg", "eze2.jfif", "eze3.jpg", "eze4.jpg"]);
-const selectedImage = ref(null);
+// Store section elements and scroll direction
+const sectionRefs = ref([]);
+const isScrollingDown = ref(false);
 const isModalOpen = ref(false);
+const selectedImage = ref(null);
+const galleryImages = ref(["eze1.jpg", "eze2.jfif", "eze3.jpg", "eze4.jpg"]);
 
 const getImageUrl = (fileName) => {
   return new URL(`../assets/${fileName}`, import.meta.url).href;
 };
 
-// Open modal with selected image
 const openModal = (img) => {
   selectedImage.value = img;
   isModalOpen.value = true;
 };
 
-// Close modal
-
-
 const closeModal = () => {
   isModalOpen.value = false;
 };
 
+const image = new URL('@/assets/_MG_0603.JPG', import.meta.url).href;
 
-  const image = new URL('@/assets/_MG_0603.JPG', import.meta.url).href;
+onMounted(() => {
+  // Initial slide-in for content elements (text and image) on page load
+  const heroSection = document.querySelector(".hero");
+  const textAndImage = document.querySelectorAll(".hero .content, .hero .image-frame");
 
-  </script>
-  
-  <style scoped>
-/* General Layout */
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevents horizontal scrolling */
-}
+  textAndImage.forEach((element, index) => {
+    element.style.animation = `slideIn 1s ease-out ${index * 0.3}s forwards`;
+  });
 
+  // Listen for scroll event to detect direction
+  window.addEventListener("scroll", handleScroll);
+});
+
+// Function to handle scroll direction and trigger animations
+const handleScroll = () => {
+  const scrollPosition = window.scrollY;
+  const lastScrollPosition = ref(0);
+
+  // Determine if scrolling down or up
+  isScrollingDown.value = scrollPosition > lastScrollPosition.value;
+  lastScrollPosition.value = scrollPosition;
+
+  // Trigger slide-in based on scroll
+  sectionRefs.value.forEach((section, index) => {
+    if (isScrollingDown.value) {
+      section.style.animation = `slideInDown 1s ease-out ${index * 0.3}s forwards`;
+    } else {
+      section.style.animation = `slideInUp 1s ease-out ${index * 0.3}s forwards`;
+    }
+  });
+};
+</script>
+
+
+<style scoped>/* Slide-in effect from top */
+/* Slide-in effect */
 /* Hero Section */
 .hero {
   display: flex;
@@ -115,11 +138,12 @@ body {
   padding: 80px 10%;
   gap: 40px;
   text-align: left;
-  min-height: 100vh; /* Increased from 90vh to 100vh to take up the full height of the screen */
+  min-height: 100vh; /* Change from 90vh to 100vh to fill the whole screen */
   background-color: #0d0d0d;
   flex-wrap: wrap; /* Allows elements to stack on smaller screens */
   width: 100%;
   box-sizing: border-box;
+  
 }
 
 /* Ensures text stays readable */
@@ -173,6 +197,7 @@ body {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 50%;
+  
 }
 
 .image-frame img {
@@ -181,6 +206,113 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero,
+.about,
+.gallery {
+  opacity: 0;
+  transform: translateY(-100px);
+  animation: slideIn 1s ease-out forwards;
+}
+
+section {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+section.slide-in-from-top {
+  animation: slideIn 1s ease-out forwards;
+}
+
+.gallery .gallery-item {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: slideIn 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.gallery .gallery-item:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.gallery .gallery-item:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.gallery .gallery-item:nth-child(4) {
+  animation-delay: 1.2s;
+}
+
+/* Navigation Styling */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  z-index: 1000;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  background-color: #575757;
+}
+/* General Layout */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
 
 /* About Section */
 .section {
@@ -204,7 +336,6 @@ body {
   text-align: left;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 10px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -320,7 +451,6 @@ body {
   text-align: center;
   padding: 60px 20px;
   background-color: #0d0d0d;
-  border-radius: 12px;
 }
 
 .gallery h4 {
@@ -450,6 +580,7 @@ body {
     text-align: center;
     padding: 100px 5% 50px; /* Extra padding to push below navbar */
     gap: 20px;
+    padding-top: 150px;
   }
 
   .image-frame {

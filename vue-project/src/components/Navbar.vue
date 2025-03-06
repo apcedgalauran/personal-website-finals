@@ -1,14 +1,15 @@
-
 <template>
   <nav class="navbar">
     <div class="container">
-      <h1 class="logo">My Personal Website</h1>
+      <h1>
+        <a href="#" @click="scrollToTop" class="logo-link">EDG</a>
+      </h1>
       <div class="hamburger" @click="toggleMenu">☰</div>
       <ul :class="{ 'show': isMenuOpen }">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#guestbook">Guestbook</a></li>
+        <li><a href="javascript:void(0)" @click="scrollToSection('home')">Home</a></li>
+        <li><a href="javascript:void(0)" @click="scrollToSection('about')">About</a></li>
+        <li><a href="javascript:void(0)" @click="scrollToSection('gallery')">Gallery</a></li>
+        <li><a href="javascript:void(0)" @click="scrollToSection('guestbook')">Guestbook</a></li>
       </ul>
     </div>
   </nav>
@@ -18,22 +19,45 @@
 export default {
   data() {
     return {
-      isMenuOpen: false
+      isMenuOpen: false,
     };
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-    }
-  }
+    },
+    scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({
+          behavior: 'smooth',  // Ensures smooth scroll
+          block: 'start',      // Aligns the section to the top of the page
+        });
+      }
+    },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.logo-link {
+  text-decoration: none; /* Remove underline */
+  color: #ffffff; /* White color for text */
+  font-size: 3rem; /* Adjust font size */
+  font-weight: bold; /* Make it bold */
+  font-family: 'Poppins', sans-serif;
+}
+
 /* Navbar styles */
 .navbar {
   background: #1e1e1e;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1rem;
   position: fixed;
   width: 100%;
   top: 0;
@@ -48,7 +72,7 @@ export default {
   align-items: center;
   max-width: 1200px;
   margin: auto;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 .navbar .logo {
