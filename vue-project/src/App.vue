@@ -2,9 +2,7 @@
   <div id="app">
     <Navbar />
     <main>
-      <HeroSection />
-      <AboutMe />
-      <Projects />
+      <ProfileContent />
       <Guestbook />
       <ContactForm />
     </main>
@@ -13,17 +11,13 @@
 
 <script>
 import Navbar from './components/Navbar.vue';
-import HeroSection from './components/HeroSection.vue';
-import AboutMe from './components/AboutMe.vue';
-import Projects from './components/Projects.vue';
 import Guestbook from './components/Guestbook.vue';
+import ProfileContent from './components/ProfileContent.vue';
 
 export default {
   components: {
     Navbar,
-    HeroSection,
-    AboutMe,
-    Projects,
+    ProfileContent,
     Guestbook
   }
 };
