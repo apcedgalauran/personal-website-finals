@@ -1,5 +1,5 @@
 <template>
-  <section class="hero">
+  <section id="hero" class="section">
     <h1>Hello, I'm <span class="name">Your Name</span></h1>
     <p>Web Developer | Vue.js Enthusiast</p>
     <button class="btn">View My Work</button>

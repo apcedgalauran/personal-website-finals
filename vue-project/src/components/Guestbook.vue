@@ -1,5 +1,5 @@
 <template>
-  <section class="guestbook">
+  <section id = "guestbook" class="section">
     <h2>Guestbook</h2>
     <form @submit.prevent="addMessage">
       <input v-model="name" placeholder="Your Name" required />

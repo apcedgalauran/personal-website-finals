@@ -1,5 +1,5 @@
 <template>
-  <section class="projects">
+  <section id = "projects" class= "section">
     <h2>Projects</h2>
     <div class="grid">
       <div v-for="project in projects" :key="project.id" class="project-card">

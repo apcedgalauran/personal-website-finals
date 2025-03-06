@@ -17,7 +17,6 @@ import HeroSection from './components/HeroSection.vue';
 import AboutMe from './components/AboutMe.vue';
 import Projects from './components/Projects.vue';
 import Guestbook from './components/Guestbook.vue';
-import ContactForm from './components/ContactForm.vue';
 
 export default {
   components: {
@@ -25,8 +24,7 @@ export default {
     HeroSection,
     AboutMe,
     Projects,
-    Guestbook,
-    ContactForm
+    Guestbook
   }
 };
 </script>
