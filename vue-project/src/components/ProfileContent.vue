@@ -23,11 +23,11 @@
     <div class="hobbies">
       <div class="hobby-card">
         <i class="hobby-icon fas fa-guitar"></i>
-        <p>Strumming melodies on my guitar and exploring different genres of music.</p>
+        <p>Playing different instruments like guitar, piano, drums and exploring different genres of music.</p>
       </div>
       <div class="hobby-card">
         <i class="hobby-icon fas fa-basketball-ball"></i>
-        <p>Enjoying intense basketball and volleyball games, whether for fun or competition.</p>
+        <p>Enjoying basketball and volleyball games, whether for fun or competition.</p>
       </div>
       <div class="hobby-card">
         <i class="hobby-icon fas fa-gamepad"></i>
@@ -50,17 +50,49 @@
   </div>
 </section>
 
+<section id = "gallery" class="section">
+    <h4>Picture Gallery</h4>
+    <div class="gallery-grid">
+      <div v-for="(img, index) in galleryImages" :key="index" class="gallery-item">
+        <img :src="getImageUrl(img)" alt="Gallery Image" @click="openModal(img)" />
+      </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div v-if="isModalOpen" class="modal" @click="closeModal">
+      <div class="modal-content">
+        <img :src="getImageUrl(selectedImage)" alt="Full Image" />
+      </div>
+    </div>
+  </section>
 </template>
 
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const images = ref([
-    { src: 'gallery1.jpg', alt: 'Gallery Image 1' },
-    { src: 'gallery2.jpg', alt: 'Gallery Image 2' },
-    { src: 'gallery3.jpg', alt: 'Gallery Image 3' }
-  ]);
+<script setup>
+import { ref } from "vue";
+
+
+const galleryImages = ref(["eze1.jpg", "eze2.jfif", "eze3.jpg", "eze4.jpg"]);
+const selectedImage = ref(null);
+const isModalOpen = ref(false);
+
+const getImageUrl = (fileName) => {
+  return new URL(`../assets/${fileName}`, import.meta.url).href;
+};
+
+// Open modal with selected image
+const openModal = (img) => {
+  selectedImage.value = img;
+  isModalOpen.value = true;
+};
+
+// Close modal
+
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
+
   const image = new URL('@/assets/_MG_0603.JPG', import.meta.url).href;
 
   </script>
@@ -148,6 +180,21 @@ body {
 
 /* About Section */
 /* About Section */
+.section {
+  text-align: center; /* Centers all inline content */
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
+
+.section h4 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center; /* Ensures the heading itself is centered */
+  width: 100%; /* Ensures it spans the full width */
+  display: block; /* Makes sure it behaves as a block element */
+}
+
 .about {
   padding: 60px 10%;
   background: linear-gradient(135deg, #1a1a1a, #292929);
@@ -267,37 +314,94 @@ body {
 }
 /* Gallery Section */
 .gallery {
-  padding: 50px 8%;
-  background-color: #1a1a1a;
   text-align: center;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #e3eaf3, #f8f9fa); /* Subtle gradient */
+  border-radius: 12px;
 }
 
-.gallery h3 {
-  font-size: 2rem;
-  color: #ffffff;
+.gallery h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.gallery-container {
+/* Grid Layout */
+.gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 20px;
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Image Styling - Uniform Size */
+.gallery-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Make the last image centered at the bottom */
+.gallery-item:last-child {
+  grid-column: 2 / 3; /* Places it in the center column */
+}
+
+/* Hover Effect */
+.gallery-item img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+  max-width: 80%;
+  max-height: 80%;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.gallery-item {
-  overflow: hidden;
+.modal img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 90vh;
   border-radius: 10px;
-  transition: transform 0.3s ease-in-out;
+  box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.2);
 }
 
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* RESPONSIVE BREAKPOINTS */

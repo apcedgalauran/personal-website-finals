@@ -18,7 +18,7 @@
 <style>
 .navbar {
   background: #1e1e1e;
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 1.5rem; /* Slightly more padding */
   position: relative;
   width: 100%;
   top: 0;
@@ -37,7 +37,7 @@
 }
 
 .navbar .logo {
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Slightly larger */
   font-weight: bold;
   color: #f8f9fa;
 }
@@ -45,7 +45,7 @@
 .navbar ul {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 24px; /* Slightly increased spacing */
   align-items: center;
 }
 
@@ -53,8 +53,8 @@
   text-decoration: none;
   color: #f0f0f0;
   font-weight: bold;
-  font-size: 1rem;
-  padding: 8px 12px;
+  font-size: 1.1rem; /* Slightly larger */
+  padding: 10px 14px; /* Better clickable area */
   transition: all 0.3s ease-in-out;
   border-radius: 6px;
 }
@@ -68,12 +68,21 @@
 @media (max-width: 768px) {
   .navbar ul {
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .navbar {
-    padding: 0.8rem 1rem;
+    padding: 1rem;
+  }
+
+  .navbar .logo {
+    font-size: 1.6rem; /* Slightly smaller for mobile */
+  }
+
+  .navbar a {
+    font-size: 1rem; /* Adjusted for smaller screens */
   }
 }
+
 </style>
 
