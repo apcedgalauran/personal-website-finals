@@ -74,6 +74,8 @@ export default {
 .guestbook {
   text-align: center;
   padding: 2rem;
+  background-color: #f2f2f2; /* Light grey background */
+  border-radius: 10px; /* Optional: Adds a rounded border for a smooth look */
 }
 
 form {
@@ -125,4 +127,5 @@ li {
   margin-bottom: 10px;
   text-align: left;
 }
+
 </style>

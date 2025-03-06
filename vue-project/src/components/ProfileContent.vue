@@ -115,7 +115,7 @@ body {
   padding: 80px 10%;
   gap: 40px;
   text-align: left;
-  min-height: 90vh;
+  min-height: 100vh; /* Increased from 90vh to 100vh to take up the full height of the screen */
   background-color: #0d0d0d;
   flex-wrap: wrap; /* Allows elements to stack on smaller screens */
   width: 100%;
@@ -334,11 +334,24 @@ body {
 /* Grid Layout */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-template-columns: repeat(3, 1fr); /* 3 columns by default */
   gap: 20px;
   max-width: 1000px;
   margin: auto;
   padding: 20px;
+}
+
+/* Responsive Gallery Layout */
+@media (max-width: 768px) { 
+  .gallery-grid { 
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */ 
+  } 
+}
+
+@media (max-width: 480px) { 
+  .gallery-grid { 
+    grid-template-columns: repeat(1, 1fr); /* 1 column for very small screens */ 
+  } 
 }
 
 /* Image Styling - Uniform Size */
