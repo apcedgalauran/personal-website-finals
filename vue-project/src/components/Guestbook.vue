@@ -81,9 +81,9 @@ export default {
 <style scoped>
 .guestbook {
   text-align: center;
-  padding: 2rem;
-  background-color: #f2f2f2; /* Light grey background */
-  border-radius: 10px; /* Optional: Adds a rounded border for a smooth look */
+  padding: 3rem 2rem;
+  background-color: var(--color-bg-secondary, #FAF8F5);
+  border-radius: var(--radius-lg, 16px);
 }
 
 form {
@@ -95,11 +95,19 @@ form {
 }
 
 input, textarea {
-  padding: 10px;
+  padding: 12px;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 2px solid var(--color-border, #E8E3DD);
+  border-radius: var(--radius-sm, 8px);
   font-size: 1rem;
+  background: var(--color-bg-primary, #FFFFFF);
+  color: var(--color-text-primary, #4A3F35);
+  transition: border-color var(--transition-base, 0.3s ease);
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-secondary, #B8956A);
 }
 
 textarea {
@@ -107,18 +115,27 @@ textarea {
 }
 
 button {
-  background: var(--primary-color, #c37d0f);
-  color: white;
-  padding: 10px;
+  background: var(--color-accent-primary, #D4A574);
+  color: var(--color-bg-primary, #FFFFFF);
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm, 8px);
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  transition: all var(--transition-base, 0.3s ease);
 }
 
 button:hover {
-  background: #a6670d;
+  background: var(--color-accent-secondary, #B8956A);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow-hover, rgba(74, 63, 53, 0.15));
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 ul {
@@ -138,12 +155,23 @@ ul {
 }
 
 li {
-  background: #2b2b2b;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  background: var(--color-bg-card, #FDFCFB);
+  color: var(--color-text-primary, #4A3F35);
+  padding: 16px;
+  border-radius: var(--radius-md, 12px);
+  margin-bottom: 12px;
   text-align: left;
+  border: 1px solid var(--color-border-light, #F0EBE5);
+  box-shadow: 0 2px 8px var(--color-shadow, rgba(74, 63, 53, 0.08));
+}
+
+li strong {
+  color: var(--color-accent-secondary, #B8956A);
+}
+
+li p {
+  color: var(--color-text-secondary, #6B5D52);
+  margin-top: 8px;
 }
 </style>
 

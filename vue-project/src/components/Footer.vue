@@ -6,24 +6,24 @@
   
   <style scoped>
   .footer {
-    background: #1e1e1e;
-    color: #f0f0f0;
+    background: var(--color-bg-secondary, #FAF8F5);
+    color: var(--color-text-secondary, #6B5D52);
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     position: relative;
     bottom: 0;
     width: 100%;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--color-border, #E8E3DD);
   }
   
   .footer p {
     margin: 0;
-    transition: color 0.3s ease-in-out;
+    transition: color var(--transition-base, 0.3s ease);
   }
   
   .footer p:hover {
-    color: #ffa500;
+    color: var(--color-accent-secondary, #B8956A);
   }
   </style>

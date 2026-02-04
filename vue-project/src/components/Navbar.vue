@@ -47,23 +47,24 @@ export default {
 
 <style scoped>
 .logo-link {
-  text-decoration: none; /* Remove underline */
-  color: #ffffff; /* White color for text */
-  font-size: 3rem; /* Adjust font size */
-  font-weight: bold; /* Make it bold */
+  text-decoration: none;
+  color: var(--color-text-primary, #4A3F35);
+  font-size: 3rem;
+  font-weight: bold;
   font-family: 'Poppins', sans-serif;
 }
 
 /* Navbar styles */
 .navbar {
-  background: #1e1e1e;
+  background: var(--color-bg-primary, #FFFFFF);
   padding: 0.5rem 1rem;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 12px var(--color-shadow, rgba(74, 63, 53, 0.08));
+  border-bottom: 1px solid var(--color-border, #E8E3DD);
 }
 
 .navbar .container {
@@ -78,7 +79,7 @@ export default {
 .navbar .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #f8f9fa;
+  color: var(--color-text-primary, #4A3F35);
 }
 
 /* Default navigation menu */
@@ -91,19 +92,19 @@ export default {
 
 /* Navbar links */
 .navbar a {
-  color: #f0f0f0;
-  font-weight: bold;
+  color: var(--color-text-secondary, #6B5D52);
+  font-weight: 600;
   font-size: 1rem;
   padding: 10px 14px;
-  transition: all 0.3s ease-in-out;
-  border-radius: 6px;
-  text-decoration: none; /* This removes the underline */
+  transition: all var(--transition-base, 0.3s ease);
+  border-radius: var(--radius-sm, 8px);
+  text-decoration: none;
 }
 
 /* Hover effect without underline */
 .navbar a:hover {
-  background: rgba(255, 165, 0, 0.2);
-  color: #ffa500;
+  background: var(--color-bg-tertiary, #F5F1ED);
+  color: var(--color-accent-secondary, #B8956A);
 }
 
 /* Mobile responsive */
@@ -124,9 +125,10 @@ export default {
     top: 60px;
     left: 0;
     width: 100%;
-    background: #1e1e1e;
+    background: var(--color-bg-primary, #FFFFFF);
     padding: 10px 0;
     text-align: center;
+    box-shadow: 0 4px 12px var(--color-shadow, rgba(74, 63, 53, 0.08));
   }
 
   /* Show menu when active */
@@ -144,7 +146,7 @@ export default {
   .hamburger {
     display: block;
     font-size: 1.8rem;
-    color: white;
+    color: var(--color-text-primary, #4A3F35);
     cursor: pointer;
   }
 }

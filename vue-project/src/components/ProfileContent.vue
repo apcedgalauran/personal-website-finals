@@ -95,36 +95,41 @@ const closeModal = () => {
 const image = new URL('@/assets/_MG_0603.JPG', import.meta.url).href;
 
 onMounted(() => {
-  // Initial slide-in for content elements (text and image) on page load
-  const heroSection = document.querySelector(".hero");
-  const textAndImage = document.querySelectorAll(".hero .content, .hero .image-frame");
+  // Cascading wave animation: left content first, then image
+  const contentElement = document.querySelector(".hero .content");
+  const imageElement = document.querySelector(".hero .image-frame");
 
-  textAndImage.forEach((element, index) => {
-    element.style.animation = `slideIn 1s ease-out ${index * 0.3}s forwards`;
-  });
+  if (contentElement) {
+    contentElement.style.setProperty('animation', 'waveSlideDown 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards', 'important');
+  }
+  
+  if (imageElement) {
+    imageElement.style.setProperty('animation', 'waveSlideDown 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards', 'important');
+  }
 
-  // Listen for scroll event to detect direction
-  window.addEventListener("scroll", handleScroll);
+  // Set up Intersection Observer for about and gallery sections
+  const observerOptions = {
+    root: null,
+    rootMargin: '-100px 0px -100px 0px',
+    threshold: 0.2
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe about and gallery sections
+  const aboutSection = document.getElementById('about');
+  const gallerySection = document.getElementById('gallery');
+  
+  if (aboutSection) observer.observe(aboutSection);
+  if (gallerySection) observer.observe(gallerySection);
 });
-
-// Function to handle scroll direction and trigger animations
-const handleScroll = () => {
-  const scrollPosition = window.scrollY;
-  const lastScrollPosition = ref(0);
-
-  // Determine if scrolling down or up
-  isScrollingDown.value = scrollPosition > lastScrollPosition.value;
-  lastScrollPosition.value = scrollPosition;
-
-  // Trigger slide-in based on scroll
-  sectionRefs.value.forEach((section, index) => {
-    if (isScrollingDown.value) {
-      section.style.animation = `slideInDown 1s ease-out ${index * 0.3}s forwards`;
-    } else {
-      section.style.animation = `slideInUp 1s ease-out ${index * 0.3}s forwards`;
-    }
-  });
-};
 </script>
 
 
@@ -138,19 +143,25 @@ const handleScroll = () => {
   padding: 80px 10%;
   gap: 40px;
   text-align: left;
-  min-height: 100vh; /* Change from 90vh to 100vh to fill the whole screen */
-  background-color: #0d0d0d;
-  flex-wrap: wrap; /* Allows elements to stack on smaller screens */
+  min-height: 100vh;
+  background-color: var(--color-bg-primary, #FFFFFF);
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
-  
+  opacity: 1; /* Hero container visible, children animated */
 }
 
 /* Ensures text stays readable */
 .content {
   max-width: 700px;
   flex: 1;
-  min-width: 300px; /* Prevents text from getting too narrow */
+  min-width: 300px;
+}
+
+/* Hero specific content animation */
+.hero .content {
+  opacity: 0;
+  animation: waveSlideDown 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* Text Styling */
@@ -158,13 +169,17 @@ const handleScroll = () => {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #ffffff;
+  color: var(--color-text-primary, #4A3F35);
+}
+
+.hero .highlight {
+  color: var(--color-accent-secondary, #B8956A);
 }
 
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 30px;
-  color: #e0e0e0;
+  color: var(--color-text-secondary, #6B5D52);
 }
 
 /* Button */
@@ -173,16 +188,17 @@ const handleScroll = () => {
   padding: 12px 28px;
   font-size: 1.1rem;
   font-weight: bold;
-  color: #fff;
-  background-color: #e68a00;
-  border-radius: 8px;
+  color: var(--color-bg-primary, #FFFFFF);
+  background-color: var(--color-accent-primary, #D4A574);
+  border-radius: var(--radius-sm, 8px);
   text-decoration: none;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--transition-base, 0.3s ease);
 }
 
 .btn:hover {
-  background-color: #cc7700;
-  transform: scale(1.05);
+  background-color: var(--color-accent-secondary, #B8956A);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow-hover, rgba(74, 63, 53, 0.15));
 }
 
 /* Profile Picture Styling */
@@ -191,13 +207,18 @@ const handleScroll = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35vw; /* Slightly smaller for better spacing */
+  width: 35vw;
   max-width: 400px;
   height: auto;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 50%;
-  
+}
+
+/* Hero specific image animation */
+.hero .image-frame {
+  opacity: 0;
+  animation: waveSlideDown 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
 }
 
 .image-frame img {
@@ -215,6 +236,21 @@ const handleScroll = () => {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Smooth wave cascading animation */
+@keyframes waveSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-80px) translateX(-20px) scale(0.95);
+  }
+  60% {
+    transform: translateY(10px) translateX(0) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
   }
 }
 
@@ -240,40 +276,26 @@ const handleScroll = () => {
   }
 }
 
-.hero,
-.about,
+.about {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.about.animate-in {
+  animation: slideInUp 1s ease-out forwards;
+}
+
 .gallery {
   opacity: 0;
-  transform: translateY(-100px);
-  animation: slideIn 1s ease-out forwards;
+  transform: translateY(50px);
 }
 
-section {
-  opacity: 0;
-  transform: translateY(-100px);
-}
-
-section.slide-in-from-top {
-  animation: slideIn 1s ease-out forwards;
+.gallery.animate-in {
+  animation: slideInUp 1s ease-out forwards;
 }
 
 .gallery .gallery-item {
-  opacity: 0;
-  transform: translateY(-50px);
-  animation: slideIn 1s ease-out forwards;
-  animation-delay: 0.3s;
-}
-
-.gallery .gallery-item:nth-child(2) {
-  animation-delay: 0.6s;
-}
-
-.gallery .gallery-item:nth-child(3) {
-  animation-delay: 0.9s;
-}
-
-.gallery .gallery-item:nth-child(4) {
-  animation-delay: 1.2s;
+  opacity: 1;
 }
 
 /* Navigation Styling */
@@ -302,7 +324,7 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #575757;
+  background-color: var(--color-bg-tertiary, #F5F1ED);
 }
 /* General Layout */
 body {
@@ -318,13 +340,13 @@ body {
 .section {
   text-align: center; /* Centers all inline content */
   padding: 40px 20px;
-  background-color: #f8f9fa;
+  background-color: var(--color-bg-secondary, #FAF8F5);
 }
 
 .section h4 {
   font-size: 20px;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--color-text-primary, #4A3F35);
   text-align: center; /* Ensures the heading itself is centered */
   width: 100%; /* Ensures it spans the full width */
   display: block; /* Makes sure it behaves as a block element */
@@ -332,21 +354,22 @@ body {
 
 .about {
   padding: 60px 10%;
-  background: linear-gradient(135deg, #1a1a1a, #292929);
+  background: var(--color-bg-secondary, #FAF8F5);
   text-align: left;
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 2px 12px var(--color-shadow, rgba(74, 63, 53, 0.08));
 }
 
 .about .content {
   max-width: 800px;
   margin: 0 auto;
+  opacity: 1;
 }
 
 .about h2,
 .about h3 {
-  color: #f8f9fa;
+  color: var(--color-text-primary, #4A3F35);
   position: relative;
   display: inline-block;
   padding-bottom: 8px;
@@ -358,7 +381,7 @@ body {
   display: block;
   width: 50px;
   height: 3px;
-  background-color: #e68a00;
+  background-color: var(--color-accent-primary, #D4A574);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -366,7 +389,7 @@ body {
 
 .about p {
   font-size: 1.1rem;
-  color: #d1d1d1;
+  color: var(--color-text-secondary, #6B5D52);
   line-height: 1.6;
 }
 
@@ -379,85 +402,83 @@ body {
 }
 
 .hobby-card {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-bg-card, #FDFCFB);
   padding: 16px;
-  border-radius: 10px;
+  border-radius: var(--radius-md, 12px);
   flex: 1 1 250px;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--transition-base, 0.3s ease);
   font-size: 1.1rem;
-  color: #f8f9fa;
+  color: var(--color-text-primary, #4A3F35);
   font-weight: 500;
-  box-shadow: 0 4px 10px rgba(255, 136, 0, 0.2);
+  border: 1px solid var(--color-border, #E8E3DD);
+  box-shadow: 0 2px 8px var(--color-shadow, rgba(74, 63, 53, 0.08));
 }
 
 .hobby-card:hover {
-  background-color: rgba(255, 136, 0, 0.2);
+  background-color: var(--color-bg-tertiary, #F5F1ED);
   transform: translateY(-5px);
+  box-shadow: 0 4px 16px var(--color-shadow-hover, rgba(74, 63, 53, 0.15));
 }
 
 .hobby-icon {
   font-size: 1.8rem;
-  color: #e68a00;
+  color: var(--color-accent-secondary, #B8956A);
 }
 /* Goal & Video Sections */
 .goal-card, .video-card {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-bg-card, #FDFCFB);
   padding: 16px;
-  border-radius: 10px;
+  border-radius: var(--radius-md, 12px);
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease-in-out;
+  transition: all var(--transition-base, 0.3s ease);
   font-size: 1.1rem;
-  color: #f8f9fa;
+  color: var(--color-text-primary, #4A3F35);
   font-weight: 500;
-  box-shadow: 0 4px 10px rgba(255, 136, 0, 0.2);
+  border: 1px solid var(--color-border, #E8E3DD);
+  box-shadow: 0 2px 8px var(--color-shadow, rgba(74, 63, 53, 0.08));
   margin-top: 10px;
 }
 
 .goal-card:hover, .video-card:hover {
-  background-color: rgba(255, 136, 0, 0.2);
+  background-color: var(--color-bg-tertiary, #F5F1ED);
   transform: translateY(-5px);
+  box-shadow: 0 4px 16px var(--color-shadow-hover, rgba(74, 63, 53, 0.15));
 }
 
 .goal-icon, .video-icon {
   font-size: 1.8rem;
-  color: #e68a00;
+  color: var(--color-accent-secondary, #B8956A);
 }
 
 /* Favorite Video Link */
 .favorite-video-link {
   font-weight: bold;
-  color: #e68a00;
+  color: var(--color-accent-secondary, #B8956A);
   text-decoration: none;
-  transition: color 0.3s ease-in-out;
+  transition: color var(--transition-base, 0.3s ease);
 }
 
 .favorite-video-link:hover {
-  color: #ff9800;
-  text-decoration: underline;
-}
-
-
-.favorite-video-link:hover {
-  color: #ff9800;
+  color: var(--color-accent-hover, #9D7F57);
   text-decoration: underline;
 }
 /* Gallery Section */
 .gallery {
   text-align: center;
   padding: 60px 20px;
-  background-color: #0d0d0d;
+  background-color: var(--color-bg-primary, #FFFFFF);
 }
 
 .gallery h4 {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 25px;
-  color: #f7f7f7;
+  color: var(--color-text-primary, #4A3F35);
   letter-spacing: 1px;
 }
 
@@ -489,10 +510,10 @@ body {
   width: 100%;
   height: 250px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--radius-md, 12px);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 3px solid rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-base, 0.3s ease), box-shadow var(--transition-base, 0.3s ease);
+  border: 2px solid var(--color-border, #E8E3DD);
 }
 
 /* Make the last image centered at the bottom */
@@ -503,7 +524,7 @@ body {
 /* Hover Effect */
 .gallery-item img:hover {
   transform: scale(1.05);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 6px 16px var(--color-shadow-hover, rgba(74, 63, 53, 0.15));
 }
 
 /* Modal Styles */
@@ -513,7 +534,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(74, 63, 53, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -535,8 +556,8 @@ body {
   height: auto;
   max-width: 100%;
   max-height: 90vh;
-  border-radius: 10px;
-  box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 0px 8px 24px rgba(74, 63, 53, 0.3);
 }
 
 /* Fade-in animation */
